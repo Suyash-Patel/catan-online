@@ -81,29 +81,29 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
 
   const handleVertexClick = (key: string) => {
     setSelectedVertex(key);
-    const isSetupPhase = state.turnPhase === TurnPhase.SETUP_SETTLEMENT || 
-                         state.turnPhase === TurnPhase.SETUP_ROAD || 
-                         state.turnPhase === TurnPhase.SETUP_CITY || 
-                         state.turnPhase === TurnPhase.SETUP_CITY_ROAD;
-
+    
     const isMyTurn = state.turnOrder[state.currentPlayerIndex] === playerId;
+    
+    // Auto-dispatch setup phase actions directly on click
+    if (state.turnPhase === TurnPhase.SETUP_SETTLEMENT && isMyTurn) {
+      dispatch({ type: 'PLACE_INITIAL_SETTLEMENT', vertexKey: key });
+      return;
+    }
+    
+    if (state.turnPhase === TurnPhase.SETUP_CITY && isMyTurn) {
+      dispatch({ type: 'PLACE_INITIAL_CITY', vertexKey: key });
+      return;
+    }
+
     const isPostRoll = state.turnPhase === TurnPhase.POST_ROLL;
 
-    if (buildMode === 'settlement') {
-      if (isSetupPhase) {
-        dispatch({ type: 'PLACE_INITIAL_SETTLEMENT', vertexKey: key });
-      } else {
-        dispatch({ type: 'BUILD_SETTLEMENT', vertexKey: key });
-      }
-    } else if (buildMode === 'city') {
-      if (isSetupPhase) {
-        dispatch({ type: 'PLACE_INITIAL_CITY', vertexKey: key });
-      } else {
-        dispatch({ type: 'BUILD_CITY', vertexKey: key });
-      }
-    } else if (buildMode === 'knight') {
+    if ((buildMode as any) === 'settlement') {
+      dispatch({ type: 'BUILD_SETTLEMENT', vertexKey: key });
+    } else if ((buildMode as any) === 'city') {
+      dispatch({ type: 'BUILD_CITY', vertexKey: key });
+    } else if ((buildMode as any) === 'knight') {
       dispatch({ type: 'HIRE_KNIGHT', vertexKey: key });
-    } else if (buildMode === 'city_wall') {
+    } else if ((buildMode as any) === 'city_wall') {
       dispatch({ type: 'BUILD_CITY_WALL', vertexKey: key });
     } else if (isMyTurn && (isPostRoll || state.turnPhase === TurnPhase.SPECIAL_BUILD)) {
       // Direct click build triggers
@@ -132,20 +132,21 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
 
   const handleEdgeClick = (key: string) => {
     setSelectedEdge(key);
-    const isSetupPhase = state.turnPhase === TurnPhase.SETUP_SETTLEMENT || 
-                         state.turnPhase === TurnPhase.SETUP_ROAD || 
-                         state.turnPhase === TurnPhase.SETUP_CITY || 
-                         state.turnPhase === TurnPhase.SETUP_CITY_ROAD;
-
+    
     const isMyTurn = state.turnOrder[state.currentPlayerIndex] === playerId;
+    
+    // Auto-dispatch setup road actions directly on click
+    if ((state.turnPhase === TurnPhase.SETUP_ROAD || state.turnPhase === TurnPhase.SETUP_CITY_ROAD) && isMyTurn) {
+      dispatch({ type: 'PLACE_INITIAL_ROAD', edgeKey: key });
+      return;
+    }
+
     const isPostRoll = state.turnPhase === TurnPhase.POST_ROLL;
 
-    if (isSetupPhase) {
-      if (buildMode === 'road' || state.turnPhase === TurnPhase.SETUP_ROAD || state.turnPhase === TurnPhase.SETUP_CITY_ROAD) {
-        dispatch({ type: 'PLACE_INITIAL_ROAD', edgeKey: key });
-      }
+    if ((buildMode as any) === 'road') {
+      dispatch({ type: 'BUILD_ROAD', edgeKey: key });
     } else if (isMyTurn && (isPostRoll || state.turnPhase === TurnPhase.SPECIAL_BUILD)) {
-      if (buildMode === 'road' || (buildMode === null && canAfford(BUILDING_COSTS.ROAD))) {
+      if ((buildMode as any) === 'road' || (buildMode === null && canAfford(BUILDING_COSTS.ROAD))) {
         dispatch({ type: 'BUILD_ROAD', edgeKey: key });
       }
     }
@@ -385,7 +386,7 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
         })}
       </g>
 
-      {/* 2. Ports Layer - Connectors & Anchor badges */}
+      {/* 2. Ports Layer - Wooden docks & sailing ships at the edge */}
       <g id="ports-layer">
         {board.ports.map((port, idx) => {
           const [v1Key, v2Key] = port.vertices;
@@ -398,36 +399,46 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
           const midX = (p1.x + p2.x) / 2;
           const midY = (p1.y + p2.y) / 2;
 
-          // Project the port badge slightly outward from the island center
+          // Project the port badge further outward from the island center to place it on the water edge
           const angle = Math.atan2(midY, midX);
-          const offsetDist = 18;
+          const offsetDist = 38; // Increased from 18 to 38 for standard outer harbor position
           const badgeX = midX + Math.cos(angle) * offsetDist;
           const badgeY = midY + Math.sin(angle) * offsetDist;
 
           return (
             <g key={`port-${idx}`}>
-              {/* Dashed connector line to harbor vertices */}
-              <line x1={p1.x} y1={p1.y} x2={badgeX} y2={badgeY} className="port-dashed-connector" />
-              <line x1={p2.x} y1={p2.y} x2={badgeX} y2={badgeY} className="port-dashed-connector" />
+              {/* Wooden docks/bridges leading to the shore vertices */}
+              <line x1={p1.x} y1={p1.y} x2={badgeX} y2={badgeY} stroke="#7c2d12" strokeWidth="4.5" strokeLinecap="round" />
+              <line x1={p1.x} y1={p1.y} x2={badgeX} y2={badgeY} stroke="#f97316" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
               
-              {/* Detailed Port Badge */}
+              <line x1={p2.x} y1={p2.y} x2={badgeX} y2={badgeY} stroke="#7c2d12" strokeWidth="4.5" strokeLinecap="round" />
+              <line x1={p2.x} y1={p2.y} x2={badgeX} y2={badgeY} stroke="#f97316" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+              
+              {/* Sailing Ship Port Graphic */}
               <g transform={`translate(${badgeX}, ${badgeY})`} style={{ pointerEvents: 'none' }} filter="url(#shadow)">
-                <circle cx="0" cy="0" r="12" className="port-circle" />
-                {/* Harbor Anchor Graphic */}
-                <path d="M0,-6 L0,6 M-4,2 L4,2 M-5,-2 C-5,5 5,5 5,-2" fill="none" stroke="var(--accent-secondary)" strokeWidth="1.5" strokeLinecap="round" />
-                <circle cx="0" cy="-6" r="2.5" fill="none" stroke="var(--accent-secondary)" strokeWidth="1.5" />
+                {/* Ship Hull */}
+                <path d="M-12,-1 L12,-1 L8,5 L-8,5 Z" fill="#78350f" stroke="#451a03" strokeWidth="1.5" />
                 
-                {/* Overlay Text for ratios */}
-                <g transform="translate(0, 15)" filter="url(#soft-glow)">
-                  <rect x="-14" y="-7" width="28" height="13" rx="4" fill="#0f172a" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+                {/* Mast */}
+                <line x1="0" y1="-1" x2="0" y2="-12" stroke="#451a03" strokeWidth="2.2" />
+                
+                {/* Sail (Vibrant White) */}
+                <path d="M0,-12 L9,-3 L0,-3 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="0.5" />
+                
+                {/* Red Flag on Mast */}
+                <polygon points="0,-12 -3.5,-10.5 0,-9" fill="#ef4444" />
+
+                {/* Wooden banner displaying exchange ratio */}
+                <g transform="translate(0, 14)">
+                  <rect x="-14" y="-7" width="28" height="13" rx="3.5" fill="#1e293b" stroke="#7c2d12" strokeWidth="1.5" />
                   <text 
                     x="0" 
                     y="-1" 
                     textAnchor="middle" 
                     dominantBaseline="central" 
                     fontSize="9" 
-                    fill="var(--accent-secondary)"
-                    fontWeight="800"
+                    fill="#f97316"
+                    fontWeight="900"
                     fontFamily="Outfit, sans-serif"
                   >
                     {port.type === PortType.GENERAL_3_1 ? '3:1' : '2:1'}
@@ -445,7 +456,9 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
           const [p1, p2] = edgeEndpoints(edge.coord, HEX_SIZE);
           const hasRoad = edge.road !== null;
           const mid = edgeToPixel(edge.coord, HEX_SIZE);
-          let isClickable = buildMode === 'road' || (state.turnPhase === TurnPhase.POST_ROLL && state.turnOrder[state.currentPlayerIndex] === playerId);
+          let isClickable = (buildMode as any) === 'road' || 
+                            ((state.turnPhase === TurnPhase.SETUP_ROAD || state.turnPhase === TurnPhase.SETUP_CITY_ROAD || state.turnPhase === TurnPhase.POST_ROLL) && 
+                             state.turnOrder[state.currentPlayerIndex] === playerId);
           
           // Setup road placement rule: must connect to newly placed building (which has no connected roads)
           if (isClickable && (state.turnPhase === TurnPhase.SETUP_ROAD || state.turnPhase === TurnPhase.SETUP_CITY_ROAD)) {
@@ -530,11 +543,12 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
           const hasBuilding = vertex.building !== null;
           const hasKnight = vertex.knight !== null;
 
-          const isClickable = buildMode === 'settlement' || 
-                              buildMode === 'city' || 
-                              buildMode === 'knight' || 
-                              buildMode === 'city_wall' ||
-                              (state.turnPhase === TurnPhase.POST_ROLL && state.turnOrder[state.currentPlayerIndex] === playerId);
+          const isClickable = (buildMode as any) === 'settlement' || 
+                              (buildMode as any) === 'city' || 
+                              (buildMode as any) === 'knight' || 
+                              (buildMode as any) === 'city_wall' ||
+                              ((state.turnPhase === TurnPhase.SETUP_SETTLEMENT || state.turnPhase === TurnPhase.SETUP_CITY || state.turnPhase === TurnPhase.POST_ROLL) && 
+                               state.turnOrder[state.currentPlayerIndex] === playerId);
 
           return (
             <g 
