@@ -133,6 +133,28 @@ const TurnTimer: React.FC = () => {
           {formatTime(timeLeft)}
         </span>
       </div>
+
+      {/* Primary Turn Actions in Widget */}
+      {isMyTurn && (
+        <div className="timer-actions">
+          {(gameState.turnPhase === TurnPhase.PRE_ROLL || gameState.turnPhase === TurnPhase.ROLL_DICE) && (
+            <button 
+              className="btn btn-primary pulse-glow timer-action-btn"
+              onClick={() => dispatch({ type: 'ROLL_DICE' })}
+            >
+              🎲 ROLL DICE
+            </button>
+          )}
+          {gameState.turnPhase === TurnPhase.POST_ROLL && (
+            <button 
+              className="btn btn-primary timer-action-btn"
+              onClick={() => dispatch({ type: 'END_TURN' })}
+            >
+              ✔ END TURN
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

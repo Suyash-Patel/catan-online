@@ -143,3 +143,35 @@
     height: 8px;
   }
 }
+
+.timer-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 4px;
+}
+
+.timer-action-btn {
+  padding: 6px 14px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  border-radius: var(--radius-sm) !important;
+  min-height: 32px !important;
+  box-shadow: 0 2px 6px rgba(0, 212, 170, 0.15);
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 480px) {
+  .timer-actions {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+  
+  .timer-action-btn {
+    width: 100%;
+    padding: 5px 10px !important;
+    font-size: 0.7rem !important;
+    min-height: 28px !important;
+  }
+}
