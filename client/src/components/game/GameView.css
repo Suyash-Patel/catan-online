@@ -166,3 +166,53 @@
     animation: slideInRight 0.3s ease forwards;
   }
 }
+
+/* Step-by-Step Instruction Guide Banner */
+.game-step-guide {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  padding: 8px 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  z-index: 10;
+  pointer-events: none;
+  animation: slideUp 0.4s ease;
+  max-width: 90%;
+  text-align: center;
+}
+
+.game-step-guide.my-turn-guide {
+  border-color: var(--accent-primary);
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 0 15px rgba(0, 212, 170, 0.2);
+}
+
+.guide-icon {
+  font-size: 1.25rem;
+}
+
+.guide-text {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+  .game-step-guide {
+    top: 60px;
+    padding: 6px 14px;
+  }
+  
+  .guide-text {
+    font-size: 0.78rem;
+  }
+}

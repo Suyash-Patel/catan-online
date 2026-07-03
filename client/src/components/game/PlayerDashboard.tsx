@@ -277,9 +277,20 @@ const PlayerDashboard: React.FC = () => {
           </button>
         )}
 
-        {/* Hourglass End Turn Button */}
-        {isPostRollPhase && isMyTurn && (
-          <button className="action-tile-btn end-turn" onClick={handleEndTurn} title="End Turn">
+        {/* Hourglass End Turn Button - Always visible on your turn but disabled when not allowed */}
+        {isMyTurn && (
+          <button 
+            className={`action-tile-btn end-turn ${!isPostRollPhase ? 'disabled' : ''}`} 
+            onClick={handleEndTurn} 
+            disabled={!isPostRollPhase}
+            title={
+              isPostRollPhase 
+                ? "End Turn" 
+                : isRollPhase 
+                  ? "Roll the dice first!" 
+                  : "Complete starting placements first!"
+            }
+          >
             <span className="build-tile-icon">⌛</span>
             <span className="action-tile-lbl">PASS</span>
           </button>

@@ -229,9 +229,19 @@
   color: #34d399;
 }
 
-.action-tile-btn.end-turn:hover {
+.action-tile-btn.end-turn:hover:not(.disabled) {
   background: rgba(16, 185, 129, 0.3);
   transform: translateY(-2px);
+}
+
+.action-tile-btn.end-turn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-muted) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 .action-tile-btn.trade {

@@ -413,7 +413,7 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
               <line 
                 x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} 
                 stroke="transparent" 
-                strokeWidth="16"
+                strokeWidth="26"
               />
 
               {/* Built road - layered gradients for 3D raised road effect */}
@@ -450,14 +450,17 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
                 <g style={{ pointerEvents: 'none' }}>
                   <line 
                     x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} 
-                    stroke="rgba(0, 212, 170, 0.4)" 
-                    strokeWidth="4" 
-                    strokeDasharray="5 3"
+                    stroke="var(--accent-primary)" 
+                    strokeWidth="7" 
+                    opacity="0.85"
                     className="road-preview"
+                    filter="url(#soft-glow)"
                   />
                   <circle 
-                    cx={mid.x} cy={mid.y} r="5" 
-                    fill="var(--accent-primary)" 
+                    cx={mid.x} cy={mid.y} r="8" 
+                    fill="#ffffff" 
+                    stroke="var(--accent-primary)" 
+                    strokeWidth="2.5"
                     filter="url(#soft-glow)"
                   />
                 </g>
@@ -494,11 +497,11 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
               {/* Glowing candidate placement dot */}
               {isClickable && !hasBuilding && !hasKnight && (
                 <circle 
-                  cx={pos.x} cy={pos.y} r="7" 
+                  cx={pos.x} cy={pos.y} r="11" 
                   fill="var(--accent-primary)"
                   stroke="#ffffff"
-                  strokeWidth="2"
-                  className="vertex-preview"
+                  strokeWidth="2.5"
+                  className="vertex-preview pulse-glow"
                   filter="url(#soft-glow)"
                 />
               )}
