@@ -1,0 +1,176 @@
+/* AAA Board Renderer Styling */
+
+.catan-board-svg {
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
+  background: radial-gradient(circle, #101726 0%, #070a10 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+  user-select: none;
+}
+
+/* Hex Hover & Glow Effects */
+.board-hex-group {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform-origin: center;
+}
+
+.board-hex-polygon {
+  transition: filter 0.3s ease, stroke-width 0.3s ease;
+}
+
+.board-hex-group:hover {
+  transform: scale(1.03) translateZ(0);
+  z-index: 50;
+}
+
+.board-hex-group:hover .board-hex-polygon {
+  filter: brightness(1.2) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+  stroke: var(--accent-primary) !important;
+  stroke-width: 3px !important;
+}
+
+/* Robber target pulse */
+.robber-target {
+  cursor: pointer;
+}
+
+.robber-target .board-hex-polygon {
+  animation: robberPulse 2s infinite ease-in-out;
+}
+
+@keyframes robberPulse {
+  0%, 100% {
+    stroke: rgba(239, 68, 68, 0.4);
+    stroke-width: 2px;
+  }
+  50% {
+    stroke: rgba(239, 68, 68, 1);
+    stroke-width: 4px;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+  }
+}
+
+/* Number Token Styles */
+.number-token-bg {
+  fill: #fcf8ee; /* Soft parchment paper */
+  stroke: #c2a679; /* Gold/bronze rim */
+  stroke-width: 2.5;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  transition: var(--transition-smooth);
+}
+
+.number-token-group:hover .number-token-bg {
+  stroke: var(--accent-primary);
+  transform: scale(1.1);
+  transform-origin: center;
+}
+
+.number-token-text {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  fill: #22252a;
+}
+
+.number-token-text.red-token {
+  fill: #dc2626; /* Deep crimson for high probability 6/8 */
+  text-shadow: 0 0 2px rgba(220, 38, 38, 0.2);
+}
+
+.number-token-dots {
+  fill: #8c7855;
+  font-size: 7px;
+}
+
+.number-token-dots.red-token {
+  fill: #dc2626;
+}
+
+/* Structures and Road Highlights */
+.road-clickable {
+  cursor: pointer;
+}
+
+.road-clickable:hover .road-preview {
+  stroke: var(--accent-primary) !important;
+  stroke-width: 6px !important;
+  opacity: 0.8 !important;
+  filter: drop-shadow(0 0 4px var(--accent-primary));
+}
+
+.road-preview {
+  transition: var(--transition-smooth);
+}
+
+.vertex-clickable {
+  cursor: pointer;
+}
+
+.vertex-clickable:hover .vertex-preview {
+  transform: scale(1.3);
+  opacity: 0.9 !important;
+  fill: var(--accent-primary) !important;
+  filter: drop-shadow(0 0 6px var(--accent-primary));
+}
+
+.vertex-preview {
+  transition: var(--transition-smooth);
+  transform-origin: center;
+}
+
+/* Building Animations & Styles */
+.catan-structure {
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.catan-structure:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Port graphics */
+.port-circle {
+  fill: #1e293b;
+  stroke: var(--accent-secondary);
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+
+.port-dashed-connector {
+  stroke: var(--accent-secondary);
+  stroke-width: 2.5;
+  stroke-dasharray: 4 3;
+  opacity: 0.6;
+}
+
+/* 3D Robber styling */
+.robber-figure {
+  animation: floatFigure 3s infinite ease-in-out;
+}
+
+@keyframes floatFigure {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Subtle Board Water Grid waves styling */
+.water-wave {
+  stroke: rgba(0, 180, 216, 0.08);
+  stroke-width: 1.5;
+  fill: none;
+  animation: waveMotion 12s infinite linear;
+}
+
+@keyframes waveMotion {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+  }
+}
