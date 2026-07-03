@@ -156,3 +156,30 @@ input:checked + .lobby-toggle-slider:before {
   font-size: 1.05rem;
   margin-top: 10px;
 }
+
+/* ===== MOBILE LOBBY ===== */
+@media (max-width: 768px) {
+  .lobby-card {
+    width: 95vw;
+    max-width: 440px;
+    padding: 24px 20px;
+  }
+
+  .lobby-logo {
+    font-size: 1.8rem;
+  }
+
+  .lobby-subtitle {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .lobby-card {
+    padding: 20px 16px;
+  }
+
+  .lobby-logo {
+    font-size: 1.5rem;
+  }
+}

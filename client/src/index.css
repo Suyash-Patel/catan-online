@@ -218,3 +218,34 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  body {
+    overflow: auto;
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .btn {
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    min-height: 44px; /* touch target */
+  }
+
+  .btn-sm {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    min-height: 36px;
+  }
+
+  .input {
+    padding: 12px 14px;
+    font-size: 16px; /* prevents zoom on iOS */
+  }
+
+  .glass-card {
+    padding: 10px;
+  }
+}

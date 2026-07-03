@@ -52,3 +52,40 @@
   color: var(--accent-secondary);
   font-weight: 700;
 }
+
+/* ===== MOBILE OPPONENTS ===== */
+@media (max-width: 768px) {
+  .opponents-list {
+    gap: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .opponents-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .opponent-card {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    gap: 6px;
+  }
+
+  .opponent-name {
+    max-width: 60px;
+    font-size: 0.75rem;
+  }
+
+  .opponent-color-indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .opponent-stat {
+    padding: 1px 4px;
+    font-size: 0.7rem;
+  }
+}

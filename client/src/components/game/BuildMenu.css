@@ -61,3 +61,30 @@
   border-radius: 4px;
   color: #000;
 }
+
+/* ===== MOBILE BUILD MENU ===== */
+@media (max-width: 768px) {
+  .build-menu-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .build-option-card {
+    padding: 8px 6px;
+  }
+
+  .build-option-name {
+    font-size: 0.65rem;
+  }
+
+  .cost-pip {
+    font-size: 0.6rem;
+    padding: 1px 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .build-menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -43,3 +43,31 @@
   left: -2px;
   font-size: 0.8rem;
 }
+
+/* ===== MOBILE BARBARIAN TRACK ===== */
+@media (max-width: 768px) {
+  .barbarian-track-wrap {
+    padding: 4px 10px;
+    gap: 8px;
+  }
+
+  .barbarian-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+  }
+
+  .barbarian-track-dots {
+    gap: 4px;
+  }
+
+  .barbarian-track-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .barbarian-track-dot.ship:after {
+    font-size: 0.6rem;
+    top: -4px;
+    left: -2px;
+  }
+}

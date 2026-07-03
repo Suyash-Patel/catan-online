@@ -64,3 +64,24 @@
   display: flex;
   gap: 8px;
 }
+
+/* ===== MOBILE ACTION LOG ===== */
+@media (max-width: 768px) {
+  .action-log-header {
+    padding: 10px;
+  }
+
+  .action-log-header h3 {
+    font-size: 0.85rem;
+  }
+
+  .action-log-messages {
+    padding: 10px;
+    gap: 8px;
+    font-size: 0.78rem;
+  }
+
+  .action-log-input-wrap {
+    padding: 10px;
+  }
+}

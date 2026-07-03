@@ -62,3 +62,28 @@
   border-radius: 4px;
   color: #000000;
 }
+
+/* ===== MOBILE CITY IMPROVEMENTS ===== */
+@media (max-width: 768px) {
+  .improvement-track-row {
+    padding: 6px 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .improvement-track-title {
+    font-size: 0.7rem;
+    width: 60px;
+  }
+
+  .improvement-level-box {
+    width: 20px;
+    height: 20px;
+    font-size: 0.65rem;
+  }
+
+  .improvement-cost-badge {
+    font-size: 0.6rem;
+    padding: 2px 4px;
+  }
+}

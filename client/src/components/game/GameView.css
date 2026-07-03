@@ -63,3 +63,100 @@
   align-items: center;
   gap: 20px;
 }
+
+.mobile-log-toggle {
+  display: none;
+}
+
+/* ===== MOBILE GAME LAYOUT ===== */
+@media (max-width: 768px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "topbar"
+      "board"
+      "dashboard";
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .game-topbar {
+    padding: 6px 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: auto;
+  }
+
+  .game-topbar-left {
+    gap: 8px;
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+
+  .game-topbar-right {
+    gap: 8px;
+  }
+
+  .game-board-area {
+    min-height: 0;
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+
+  .game-dashboard {
+    padding: 8px 10px;
+    overflow-y: auto;
+    max-height: 45vh;
+  }
+
+  .game-sidebar {
+    display: none; /* Hidden on mobile, accessible via toggle */
+  }
+
+  .mobile-log-toggle {
+    display: flex;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: #020617;
+    font-size: 1.2rem;
+    z-index: 40;
+    box-shadow: 0 4px 16px rgba(0, 212, 170, 0.4);
+    border: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .game-sidebar.mobile-visible {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 85vw;
+    max-width: 340px;
+    z-index: 45;
+    animation: slideInRight 0.3s ease;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-layout {
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .game-dashboard {
+    padding: 6px 8px;
+    max-height: 50vh;
+  }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}

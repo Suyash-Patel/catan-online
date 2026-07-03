@@ -134,7 +134,7 @@ const PlayerDashboard: React.FC = () => {
       </div>
 
       {/* Popups and sub-panels inline */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '16px', borderTop: '1px solid var(--glass-border)', paddingTop: '16px' }}>
+      <div className="dashboard-submenu-grid">
         <BuildMenu />
         {gameState.citiesAndKnights && <CityImprovements />}
       </div>

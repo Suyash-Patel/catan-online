@@ -97,3 +97,36 @@
   font-weight: 700;
   color: var(--accent-primary);
 }
+
+/* ===== MOBILE GAME OVER ===== */
+@media (max-width: 768px) {
+  .gameover-card {
+    width: 95vw;
+    max-width: 440px;
+    padding: 24px 20px;
+  }
+
+  .gameover-trophy {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .gameover-title {
+    font-size: 1.5rem;
+  }
+
+  .gameover-winner-badge {
+    font-size: 1rem;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+  }
+
+  .gameover-row {
+    padding: 8px 12px;
+  }
+
+  .gameover-leaderboard {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+}

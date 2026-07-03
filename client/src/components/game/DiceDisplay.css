@@ -70,3 +70,29 @@
   font-weight: 700;
   font-family: 'Outfit', sans-serif;
 }
+
+/* ===== MOBILE DICE DISPLAY ===== */
+@media (max-width: 768px) {
+  .dice-container {
+    gap: 6px;
+  }
+
+  .die {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+
+  .die-event {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+  }
+
+  .roll-total-badge {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+}

@@ -152,3 +152,34 @@
 .room-btn-flex {
   flex: 1;
 }
+
+/* ===== MOBILE ROOM ===== */
+@media (max-width: 768px) {
+  .room-card {
+    width: 95vw;
+    max-width: 600px;
+    padding: 24px 20px;
+  }
+
+  .room-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .room-player-row {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .room-color-grid {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .room-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

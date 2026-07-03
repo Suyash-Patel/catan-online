@@ -93,3 +93,27 @@
   font-weight: 700;
   margin-bottom: 24px;
 }
+
+/* ===== MOBILE DISCARD ===== */
+@media (max-width: 768px) {
+  .discard-modal {
+    width: 95vw;
+    padding: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .discard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .discard-item-name {
+    font-size: 0.8rem;
+  }
+
+  .discard-btn {
+    width: 36px;
+    height: 36px;
+  }
+}

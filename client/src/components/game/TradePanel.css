@@ -83,3 +83,39 @@
   text-align: center;
   font-size: 0.85rem;
 }
+
+/* ===== MOBILE TRADE PANEL ===== */
+@media (max-width: 768px) {
+  .trade-panel-wrap {
+    width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .trade-panel-header {
+    padding: 14px 16px;
+  }
+
+  .trade-panel-content {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .trade-flow {
+    flex-direction: column;
+  }
+
+  .trade-arrow {
+    transform: rotate(90deg);
+  }
+
+  .trade-select-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .trade-resource-btn {
+    padding: 6px;
+    font-size: 0.72rem;
+  }
+}

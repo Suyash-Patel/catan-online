@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import BoardRenderer from '../board/BoardRenderer';
 import OtherPlayers from './OtherPlayers';
@@ -12,6 +12,7 @@ import './GameView.css';
 
 const GameView: React.FC = () => {
   const { gameState, playerId } = useGame();
+  const [showLog, setShowLog] = useState(false);
 
   if (!gameState) {
     return (
@@ -48,9 +49,14 @@ const GameView: React.FC = () => {
       </div>
 
       {/* Sidebar */}
-      <div className="game-sidebar">
+      <div className={`game-sidebar ${showLog ? 'mobile-visible' : ''}`}>
         <ActionLog />
       </div>
+
+      {/* Mobile log toggle */}
+      <button className="mobile-log-toggle btn btn-ghost" onClick={() => setShowLog(!showLog)}>
+        {showLog ? '✕' : '💬'}
+      </button>
 
       {/* Overlays / Modals */}
       {needsDiscard && <DiscardDialog />}
