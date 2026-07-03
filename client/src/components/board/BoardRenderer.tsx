@@ -48,6 +48,20 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
   const width = maxX - minX;
   const height = maxY - minY;
 
+  const getSetupRoadVertexKey = (): string | null => {
+    // Find vertices owned by the player that have a building but no roads connected to them
+    const ownedVertices = Object.keys(board.vertices).filter(vk => {
+      const b = board.vertices[vk].building;
+      if (!b || b.playerId !== playerId) return false;
+      
+      const adjEdges = board.vertexToEdges[vk] || [];
+      const hasRoad = adjEdges.some(ek => board.edges[ek].road?.playerId === playerId);
+      return !hasRoad;
+    });
+    
+    return ownedVertices.length > 0 ? ownedVertices[0] : null;
+  };
+
   const handleHexClick = (key: string) => {
     setSelectedHex(key);
     if (state.turnPhase === TurnPhase.ROBBER_MOVE) {
@@ -401,7 +415,16 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
           const [p1, p2] = edgeEndpoints(edge.coord, HEX_SIZE);
           const hasRoad = edge.road !== null;
           const mid = edgeToPixel(edge.coord, HEX_SIZE);
-          const isClickable = buildMode === 'road';
+          let isClickable = buildMode === 'road';
+          
+          // Setup road placement rule: must connect to newly placed building (which has no connected roads)
+          if (isClickable && (state.turnPhase === TurnPhase.SETUP_ROAD || state.turnPhase === TurnPhase.SETUP_CITY_ROAD)) {
+            const setupVertex = getSetupRoadVertexKey();
+            if (setupVertex) {
+              const adjEdges = board.vertexToEdges[setupVertex] || [];
+              isClickable = adjEdges.includes(key);
+            }
+          }
 
           return (
             <g 

@@ -51,9 +51,7 @@ export function validateAction(state: GameState, playerId: string, action: GameA
       
     case 'PLACE_INITIAL_ROAD':
       if (state.turnPhase !== TurnPhase.SETUP_ROAD && state.turnPhase !== TurnPhase.SETUP_CITY_ROAD) return { valid: false, error: "Wrong phase" };
-      // Note: we can't fully validate setup road connectivity here without passing the just-built vertex.
-      // We will assume it's valid if it passes basic checks, full check in executor.
-      return canBuildRoad(state, playerId, action.edgeKey, true);
+      return canBuildRoad(state, playerId, action.edgeKey, true, (state as any)._lastSetupVertex);
       
     case 'ROLL_DICE':
       if (state.turnPhase !== TurnPhase.PRE_ROLL) return { valid: false, error: "Cannot roll now" };
