@@ -27,12 +27,12 @@
   --color-coin: #f59e0b;
 
   /* Players */
-  --color-player-RED: #ef4444;
-  --color-player-BLUE: #3b82f6;
-  --color-player-WHITE: #f3f4f6;
-  --color-player-ORANGE: #f97316;
-  --color-player-GREEN: #10b981;
-  --color-player-BROWN: #78350f;
+  --color-player-RED: #ff334b; /* Vibrant crimson neon */
+  --color-player-BLUE: #0088ff; /* Vibrant sky blue neon */
+  --color-player-WHITE: #ffffff; /* Crisp white */
+  --color-player-ORANGE: #ff8800; /* Vivid orange */
+  --color-player-GREEN: #00e676; /* Vivid neon green */
+  --color-player-BROWN: #d7ccc8; /* Warm light tan-grey for better contrast */
 
   /* UI Cards & Glass */
   --glass-bg: rgba(17, 24, 39, 0.85);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGame } from '../../context/GameContext';
-import { ClientGameState, HexCoord, VertexCoord, EdgeCoord, TerrainType, PortType, TurnPhase } from '@catan/shared';
+import { ClientGameState, HexCoord, VertexCoord, EdgeCoord, TerrainType, PortType, TurnPhase, Resource, BUILDING_COSTS } from '@catan/shared';
 import { 
   hexToPixel, 
   hexCorners, 
@@ -62,6 +62,16 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
     return ownedVertices.length > 0 ? ownedVertices[0] : null;
   };
 
+  const player = state.players.find(p => p.id === playerId);
+
+  const canAfford = (cost: Partial<Record<Resource, number>>) => {
+    if (!player) return false;
+    return Object.entries(cost).every(([res, amount]) => {
+      const balance = player.resources[res as Resource] || 0;
+      return balance >= amount;
+    });
+  };
+
   const handleHexClick = (key: string) => {
     setSelectedHex(key);
     if (state.turnPhase === TurnPhase.ROBBER_MOVE) {
@@ -75,6 +85,9 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
                          state.turnPhase === TurnPhase.SETUP_ROAD || 
                          state.turnPhase === TurnPhase.SETUP_CITY || 
                          state.turnPhase === TurnPhase.SETUP_CITY_ROAD;
+
+    const isMyTurn = state.turnOrder[state.currentPlayerIndex] === playerId;
+    const isPostRoll = state.turnPhase === TurnPhase.POST_ROLL;
 
     if (buildMode === 'settlement') {
       if (isSetupPhase) {
@@ -92,6 +105,18 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
       dispatch({ type: 'HIRE_KNIGHT', vertexKey: key });
     } else if (buildMode === 'city_wall') {
       dispatch({ type: 'BUILD_CITY_WALL', vertexKey: key });
+    } else if (isMyTurn && (isPostRoll || state.turnPhase === TurnPhase.SPECIAL_BUILD)) {
+      // Direct click build triggers
+      const vertex = board.vertices[key];
+      if (!vertex.building) {
+        if (canAfford(BUILDING_COSTS.SETTLEMENT)) {
+          dispatch({ type: 'BUILD_SETTLEMENT', vertexKey: key });
+        }
+      } else if (vertex.building.type === 'settlement' && vertex.building.playerId === playerId) {
+        if (canAfford(BUILDING_COSTS.CITY)) {
+          dispatch({ type: 'BUILD_CITY', vertexKey: key });
+        }
+      }
     } else {
       // General click actions for knights: activate/upgrade/move
       const vertex = board.vertices[key];
@@ -112,10 +137,15 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
                          state.turnPhase === TurnPhase.SETUP_CITY || 
                          state.turnPhase === TurnPhase.SETUP_CITY_ROAD;
 
-    if (buildMode === 'road') {
-      if (isSetupPhase) {
+    const isMyTurn = state.turnOrder[state.currentPlayerIndex] === playerId;
+    const isPostRoll = state.turnPhase === TurnPhase.POST_ROLL;
+
+    if (isSetupPhase) {
+      if (buildMode === 'road' || state.turnPhase === TurnPhase.SETUP_ROAD || state.turnPhase === TurnPhase.SETUP_CITY_ROAD) {
         dispatch({ type: 'PLACE_INITIAL_ROAD', edgeKey: key });
-      } else {
+      }
+    } else if (isMyTurn && (isPostRoll || state.turnPhase === TurnPhase.SPECIAL_BUILD)) {
+      if (buildMode === 'road' || (buildMode === null && canAfford(BUILDING_COSTS.ROAD))) {
         dispatch({ type: 'BUILD_ROAD', edgeKey: key });
       }
     }
@@ -415,7 +445,7 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
           const [p1, p2] = edgeEndpoints(edge.coord, HEX_SIZE);
           const hasRoad = edge.road !== null;
           const mid = edgeToPixel(edge.coord, HEX_SIZE);
-          let isClickable = buildMode === 'road';
+          let isClickable = buildMode === 'road' || (state.turnPhase === TurnPhase.POST_ROLL && state.turnOrder[state.currentPlayerIndex] === playerId);
           
           // Setup road placement rule: must connect to newly placed building (which has no connected roads)
           if (isClickable && (state.turnPhase === TurnPhase.SETUP_ROAD || state.turnPhase === TurnPhase.SETUP_CITY_ROAD)) {
@@ -446,7 +476,7 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
                   <line 
                     x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} 
                     stroke="#000" 
-                    strokeWidth="7" 
+                    strokeWidth="13" 
                     strokeLinecap="round"
                     opacity="0.55"
                   />
@@ -454,14 +484,14 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
                   <line 
                     x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} 
                     stroke={getPlayerColor(edge.road.playerId)} 
-                    strokeWidth="5" 
+                    strokeWidth="9" 
                     strokeLinecap="round"
                   />
                   {/* Top highlight for 3D rounded look */}
                   <line 
                     x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} 
                     stroke="#ffffff" 
-                    strokeWidth="1.5" 
+                    strokeWidth="2.5" 
                     strokeLinecap="round"
                     opacity="0.35"
                   />
@@ -503,7 +533,8 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
           const isClickable = buildMode === 'settlement' || 
                               buildMode === 'city' || 
                               buildMode === 'knight' || 
-                              buildMode === 'city_wall';
+                              buildMode === 'city_wall' ||
+                              (state.turnPhase === TurnPhase.POST_ROLL && state.turnOrder[state.currentPlayerIndex] === playerId);
 
           return (
             <g 
