@@ -61,7 +61,7 @@ export function drawProgressCard(state: GameState, playerId: string, track: Impr
 
 export function executeProgressCard(state: GameState, playerId: string, cardId: string, payload: any): GameState {
   const player = getPlayerById(state, playerId);
-  const card = player.progressCards.find(c => c.id === cardId);
+  const card = player.progressCards.find((c: any) => c.id === cardId);
   if (!card) throw new Error("Card not found in hand");
   
   let newState = { ...state };
@@ -70,7 +70,7 @@ export function executeProgressCard(state: GameState, playerId: string, cardId: 
   // In a full implementation, we would switch on card.type and call specific effects
   
   newState = updatePlayer(newState, playerId, {
-    progressCards: player.progressCards.filter(c => c.id !== cardId)
+    progressCards: player.progressCards.filter((c: any) => c.id !== cardId)
   });
   
   if (card.type === ProgressCardType.PRINTER || card.type === ProgressCardType.CONSTITUTION) {

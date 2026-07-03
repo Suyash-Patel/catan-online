@@ -64,7 +64,7 @@ export function joinRoom(code: string, playerId: string, playerName: string): Ro
 
   // Find unused color
   const usedColors = new Set(room.players.map((p: any) => p.color));
-  const availableColor = AVAILABLE_COLORS.find(c => !usedColors.has(c)) || AVAILABLE_COLORS[0];
+  const availableColor = AVAILABLE_COLORS.find((c: any) => !usedColors.has(c)) || AVAILABLE_COLORS[0];
 
   room.players.push({
     id: playerId,

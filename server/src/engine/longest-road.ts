@@ -30,7 +30,7 @@ export function calculateLongestRoad(state: GameState, playerId: string): number
       const v2 = state.board.edgeToVertices[e2];
       
       // Find shared vertex
-      const sharedVertex = v1.find(v => v2.includes(v));
+      const sharedVertex = v1.find((v: any) => v2.includes(v));
       if (sharedVertex) {
         // Check if shared vertex breaks the road
         const vertex = state.board.vertices[sharedVertex];

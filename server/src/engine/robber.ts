@@ -11,8 +11,8 @@ export function resolveDiscardPhase(state: GameState): GameState {
   let needsDiscard = false;
 
   for (const player of state.players) {
-    const resourceCount = Object.values(player.resources).reduce((a, b) => a + b, 0);
-    const commodityCount = Object.values(player.commodities).reduce((a, b) => a + b, 0);
+    const resourceCount = Object.values(player.resources).reduce((a: any, b: any) => a + b, 0);
+    const commodityCount = Object.values(player.commodities).reduce((a: any, b: any) => a + b, 0);
     const totalCards = resourceCount + commodityCount;
     
     const limit = BASE_HAND_LIMIT + (player.cityWallCount * CITY_WALL_HAND_BONUS);
@@ -42,8 +42,8 @@ export function getStealTargets(state: GameState, hexKey: string): string[] {
     if (building && building.playerId !== activePlayer) {
       // Must have at least 1 card to steal
       const p = getPlayerById(state, building.playerId);
-      const total = Object.values(p.resources).reduce((a, b) => a + b, 0) + 
-                    Object.values(p.commodities).reduce((a, b) => a + b, 0);
+      const total = Object.values(p.resources).reduce((a: any, b: any) => a + b, 0) + 
+                    Object.values(p.commodities).reduce((a: any, b: any) => a + b, 0);
       if (total > 0) {
         targets.add(building.playerId);
       }

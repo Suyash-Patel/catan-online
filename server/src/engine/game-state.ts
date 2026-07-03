@@ -57,7 +57,7 @@ export function createInitialGameState(
   board: Board,
   playerInfos: { id: string; name: string; color: PlayerColor }[]
 ): GameState {
-  const players = playerInfos.map(p => createInitialPlayer(p.id, p.name, p.color));
+  const players = playerInfos.map((p: any) => createInitialPlayer(p.id, p.name, p.color));
   
   // Randomize turn order
   const turnOrder = [...players.map((p: any) => p.id)];
@@ -176,7 +176,7 @@ export function calculateVictoryPoints(state: GameState, playerId: string): numb
   // For base game dev cards, usually VP cards are kept hidden until they win, 
   // but for server tracking we can count them for the win check.
   if (!state.citiesAndKnights) {
-    const vpDevCards = player.developmentCards.filter(c => c.type === 'VICTORY_POINT');
+    const vpDevCards = player.developmentCards.filter((c: any) => c.type === 'VICTORY_POINT');
     vp += vpDevCards.length * VP_VALUES.VP_DEV_CARD;
   }
 
