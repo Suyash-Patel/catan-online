@@ -48,6 +48,27 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
   const width = maxX - minX;
   const height = maxY - minY;
 
+  const portVertices = new Set(board.ports.flatMap(p => p.vertices));
+
+  const touchesLand = (vk: string): boolean => {
+    const hexKeys = board.vertexToHexes[vk] || [];
+    return hexKeys.some(hk => {
+      const hex = board.hexes[hk];
+      return hex && hex.terrain !== TerrainType.SEA;
+    });
+  };
+
+  const getPortResourceIcon = (type: PortType) => {
+    switch (type) {
+      case PortType.BRICK_2_1: return '🧱';
+      case PortType.LUMBER_2_1: return '🌲';
+      case PortType.ORE_2_1: return '⛰️';
+      case PortType.GRAIN_2_1: return '🌾';
+      case PortType.WOOL_2_1: return '🐑';
+      default: return '❓';
+    }
+  };
+
   const getSetupRoadVertexKey = (): string | null => {
     // Find vertices owned by the player that have a building but no roads connected to them
     const ownedVertices = Object.keys(board.vertices).filter(vk => {
@@ -420,13 +441,25 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
                 <path d="M-12,-1 L12,-1 L8,5 L-8,5 Z" fill="#78350f" stroke="#451a03" strokeWidth="1.5" />
                 
                 {/* Mast */}
-                <line x1="0" y1="-1" x2="0" y2="-12" stroke="#451a03" strokeWidth="2.2" />
+                <line x1="0" y1="-1" x2="0" y2="-16" stroke="#451a03" strokeWidth="2.2" />
                 
-                {/* Sail (Vibrant White) */}
-                <path d="M0,-12 L9,-3 L0,-3 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="0.5" />
+                {/* Sail (Vibrant White, enlarged to fit icons) */}
+                <path d="M0,-16 L13,-4 L0,-4 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="0.5" />
+                
+                {/* Resource Icon on Sail */}
+                <text 
+                  x="4" 
+                  y="-9" 
+                  textAnchor="middle" 
+                  dominantBaseline="central" 
+                  fontSize="9.5"
+                  style={{ pointerEvents: 'none' }}
+                >
+                  {getPortResourceIcon(port.type)}
+                </text>
                 
                 {/* Red Flag on Mast */}
-                <polygon points="0,-12 -3.5,-10.5 0,-9" fill="#ef4444" />
+                <polygon points="0,-16 -3.5,-14.5 0,-13" fill="#ef4444" />
 
                 {/* Wooden banner displaying exchange ratio */}
                 <g transform="translate(0, 14)">
@@ -539,6 +572,9 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
       {/* 4. Vertices (Settlements, Cities, Knights) Layer */}
       <g id="vertices-layer">
         {Object.entries(board.vertices).map(([key, vertex]) => {
+          // Skip drawing vertices that are completely in the sea (ocean)
+          if (!touchesLand(key)) return null;
+
           const pos = vertexToPixel(vertex.coord, HEX_SIZE);
           const hasBuilding = vertex.building !== null;
           const hasKnight = vertex.knight !== null;
@@ -561,6 +597,20 @@ const BoardRenderer: React.FC<BoardRendererProps> = ({ state, playerId }) => {
                 cx={pos.x} cy={pos.y} r="18" 
                 fill="transparent" 
               />
+
+              {/* Gold Ring for Harbor vertices/corners to show connection point */}
+              {portVertices.has(key) && (
+                <circle 
+                  cx={pos.x} 
+                  cy={pos.y} 
+                  r="7.5" 
+                  fill="none" 
+                  stroke="#fbbf24" 
+                  strokeWidth="3" 
+                  opacity="0.9"
+                  filter="url(#soft-glow)"
+                />
+              )}
 
               {/* Glowing candidate placement dot */}
               {isClickable && !hasBuilding && !hasKnight && (

@@ -99,6 +99,14 @@ export function canBuildSettlement(state: GameState, playerId: string, vertexKey
   
   if (!checkDistanceRule(state, vertexKey)) return { valid: false, error: "Distance rule violated" };
   
+  // Check if vertex touches at least one land hex (not SEA)
+  const adjacentHexes = state.board.vertexToHexes[vertexKey] || [];
+  const touchesLand = adjacentHexes.some(hk => {
+    const hex = state.board.hexes[hk];
+    return hex && hex.terrain !== 'SEA';
+  });
+  if (!touchesLand) return { valid: false, error: "Cannot build in the ocean" };
+  
   if (!isSetup) {
     if (!hasConnectedRoadToVertex(state, playerId, vertexKey)) return { valid: false, error: "Must connect to road" };
     if (!hasResources(player, BUILDING_COSTS.SETTLEMENT)) return { valid: false, error: "Not enough resources" };
