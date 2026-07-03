@@ -36,7 +36,8 @@ interface GameContextType {
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 // Socket instance
-const socket: Socket = io({
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || window.location.origin;
+const socket: Socket = io(BACKEND_URL, {
   autoConnect: true,
   reconnection: true
 });
