@@ -1,0 +1,145 @@
+/* Turn Timer Styling */
+
+.turn-timer-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(17, 24, 39, 0.75);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg);
+  min-height: 48px;
+  transition: var(--transition-smooth);
+}
+
+.turn-timer-card.low-time {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.05);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);
+}
+
+.active-player-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.active-player-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+.active-player-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.turn-label {
+  font-size: 0.65rem;
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.player-name-turn {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+/* Circular Timer Styling */
+.timer-circular-wrap {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-circle-svg {
+  width: 40px;
+  height: 40px;
+}
+
+.timer-circle-fill {
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-countdown-text {
+  position: absolute;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.timer-countdown-text.pulse-glow-red {
+  color: #f87171;
+  animation: pulseRed 1s infinite ease-in-out;
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+/* Mobile Responsiveness for Timer Widget */
+@media (max-width: 768px) {
+  .turn-timer-card {
+    padding: 4px 10px;
+    gap: 10px;
+    min-height: auto;
+  }
+
+  .player-name-turn {
+    font-size: 0.8rem;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .turn-label {
+    font-size: 0.55rem;
+  }
+
+  .timer-circular-wrap, .timer-circle-svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .timer-countdown-text {
+    font-size: 0.65rem;
+  }
+
+  .active-player-dot {
+    width: 8px;
+    height: 8px;
+  }
+}

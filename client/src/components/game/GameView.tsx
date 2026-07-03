@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import BoardRenderer from '../board/BoardRenderer';
 import OtherPlayers from './OtherPlayers';
+import TurnTimer from './TurnTimer';
 import DiceDisplay from './DiceDisplay';
 import BarbarianTrack from './BarbarianTrack';
 import PlayerDashboard from './PlayerDashboard';
@@ -31,6 +32,9 @@ const GameView: React.FC = () => {
       <div className="game-topbar">
         <div className="game-topbar-left">
           <OtherPlayers />
+        </div>
+        <div className="game-topbar-center">
+          <TurnTimer />
         </div>
         <div className="game-topbar-right">
           {gameState.citiesAndKnights && <BarbarianTrack />}

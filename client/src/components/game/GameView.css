@@ -58,6 +58,14 @@
   gap: 20px;
 }
 
+.game-topbar-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin: 0 20px;
+}
+
 .game-topbar-right {
   display: flex;
   align-items: center;
