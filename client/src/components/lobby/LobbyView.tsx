@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
+import Tutorial from '../game/Tutorial';
 import './LobbyView.css';
 
 const LobbyView: React.FC = () => {
   const { createRoom, joinRoom, playerName, setPlayerName } = useGame();
   const [activeTab, setActiveTab] = useState<'create' | 'join'>('create');
   const [roomCode, setRoomCode] = useState('');
+  const [showTutorial, setShowTutorial] = useState(false);
   const [playerCount, setPlayerCount] = useState<3 | 4 | 5 | 6>(4);
   const [citiesAndKnights, setCitiesAndKnights] = useState(true);
 
@@ -124,7 +126,18 @@ const LobbyView: React.FC = () => {
             </button>
           </form>
         )}
+
+        <button
+          className="btn btn-ghost lobby-submit-btn"
+          style={{ marginTop: '8px', fontSize: '0.85rem' }}
+          onClick={() => setShowTutorial(true)}
+        >
+          📖 How to Play
+        </button>
       </div>
+
+      {/* Tutorial overlay — auto-shows for first-timers, or manually via button */}
+      <Tutorial forceShow={showTutorial} onClose={() => setShowTutorial(false)} />
     </div>
   );
 };
