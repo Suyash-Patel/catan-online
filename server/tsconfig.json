@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@catan/shared": ["../shared/src/index.ts"],
+      "@catan/shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../shared" }
+  ]
+}

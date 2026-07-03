@@ -1,0 +1,63 @@
+.build-menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.build-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.build-option-card {
+  background: rgba(31, 41, 55, 0.4);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  user-select: none;
+}
+
+.build-option-card:hover:not(.disabled) {
+  border-color: var(--accent-primary);
+  background: rgba(0, 212, 170, 0.05);
+  transform: translateY(-1px);
+}
+
+.build-option-card.active {
+  border-color: var(--accent-primary);
+  background: rgba(0, 212, 170, 0.15);
+  box-shadow: var(--shadow-glow);
+}
+
+.build-option-card.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.build-option-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.build-option-costs {
+  display: flex;
+  gap: 4px;
+}
+
+.cost-pip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: #000;
+}

@@ -1,0 +1,45 @@
+.barbarian-track-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(31, 41, 55, 0.4);
+  border: 1px solid var(--glass-border);
+  padding: 6px 16px;
+  border-radius: var(--radius-md);
+}
+
+.barbarian-label {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: #f87171;
+}
+
+.barbarian-track-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.barbarian-track-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.barbarian-track-dot.active {
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444;
+}
+
+.barbarian-track-dot.ship:after {
+  content: "⛵";
+  position: absolute;
+  top: -5px;
+  left: -2px;
+  font-size: 0.8rem;
+}

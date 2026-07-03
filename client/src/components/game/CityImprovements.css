@@ -1,0 +1,64 @@
+.improvements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.improvements-track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.improvement-track-row {
+  display: flex;
+  align-items: center;
+  background: rgba(31, 41, 55, 0.4);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  justify-content: space-between;
+}
+
+.improvement-track-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  width: 80px;
+  letter-spacing: 0.5px;
+}
+
+.improvement-levels {
+  display: flex;
+  gap: 4px;
+}
+
+.improvement-level-box {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.improvement-level-box.active {
+  background: var(--accent-gradient);
+  color: #000000;
+  border-color: transparent;
+  box-shadow: 0 0 8px rgba(0, 212, 170, 0.3);
+}
+
+.improvement-cost-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 4px;
+  color: #000000;
+}
