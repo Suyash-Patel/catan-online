@@ -1,170 +1,168 @@
 .game-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  grid-template-rows: 70px 1fr 180px;
-  grid-template-areas: 
-    "topbar sidebar"
-    "board sidebar"
-    "dashboard sidebar";
+  position: relative;
   width: 100vw;
   height: 100vh;
-  background-color: var(--bg-primary);
-  overflow: hidden;
-  position: relative;
-}
-
-.game-topbar {
-  grid-area: topbar;
+  background-color: #1a80b6; /* Colonist Sea-blue Ocean background */
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(26, 128, 182, 0.4) 0%, rgba(15, 76, 110, 0.6) 100%),
+    radial-gradient(circle at 0% 0%, rgba(255,255,255,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(0,0,0,0.15) 0%, transparent 60%);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  background: rgba(17, 24, 39, 0.6);
-  border-bottom: 1px solid var(--glass-border);
-  z-index: 10;
+  overflow: hidden;
 }
 
+/* Floating Board Area */
 .game-board-area {
-  grid-area: board;
-  position: relative;
-  overflow: hidden;
+  flex: 1;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-right: 360px; /* Leave space for right sidebar */
+  padding-bottom: 90px; /* Leave space for bottom bar */
+  position: relative;
+  z-index: 1;
 }
 
-.game-dashboard {
-  grid-area: dashboard;
-  background: rgba(17, 24, 39, 0.8);
-  border-top: 1px solid var(--glass-border);
-  z-index: 10;
+/* Top-Right Overlays (Dice, Barbarians, Settings) */
+.game-overlays-container {
+  position: absolute;
+  top: 16px;
+  right: 376px; /* Offset from right sidebar */
   display: flex;
   align-items: center;
-  padding: 10px 24px;
+  gap: 12px;
+  z-index: 10;
+  pointer-events: auto;
 }
 
-.game-sidebar {
-  grid-area: sidebar;
-  background: rgba(17, 24, 39, 0.7);
-  border-left: 1px solid var(--glass-border);
-  z-index: 10;
+/* Right Sidebar Stack (Chat/Feed + Opponent Cards + Local Info) */
+.game-sidebar-stack {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100vh;
+  background: rgba(10, 15, 26, 0.92);
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
+  z-index: 20;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.game-topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+.sidebar-section {
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.06);
+  padding: 16px;
 }
 
-.game-topbar-center {
+.sidebar-section-header {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+/* Section 1: Chat / Feed Panel */
+.chat-section {
+  flex: 1.2;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  min-height: 0; /* Important for scroll */
+  padding: 0;
+}
+
+/* Section 2: Opponent cards list */
+.opponents-section {
   flex: 1;
-  margin: 0 20px;
+  overflow-y: auto;
+  min-height: 0;
 }
 
-.game-topbar-right {
+/* Section 3: Local Player Profile Card */
+.local-player-card {
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: none;
+}
+
+.local-player-header {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
-.mobile-log-toggle {
-  display: none;
+.local-color-indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
 }
 
-/* ===== MOBILE GAME LAYOUT ===== */
+.local-player-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.local-player-vp-badge {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  align-self: flex-start;
+}
+
+.local-player-supplies {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Bottom Floating Dashboard wrapper */
+.game-floating-dashboard {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0; /* Let dashboard position itself */
+  pointer-events: none;
+}
+
+.game-floating-dashboard * {
+  pointer-events: auto; /* Re-enable clicks */
+}
+
+/* Mobile responsive styles */
 @media (max-width: 768px) {
-  .game-layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-      "topbar"
-      "board"
-      "dashboard";
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
-  }
-
-  .game-topbar {
-    padding: 6px 10px;
-    flex-wrap: wrap;
-    gap: 6px;
-    min-height: auto;
-  }
-
-  .game-topbar-left {
-    gap: 8px;
-    flex-wrap: wrap;
-    overflow-x: auto;
-  }
-
-  .game-topbar-right {
-    gap: 8px;
-  }
-
   .game-board-area {
-    min-height: 0;
-    touch-action: pan-x pan-y pinch-zoom;
+    padding-right: 0;
+    padding-bottom: 120px;
   }
 
-  .game-dashboard {
-    padding: 8px 10px;
-    overflow-y: auto;
-    max-height: 45vh;
-  }
-
-  .game-sidebar {
-    display: none; /* Hidden on mobile, accessible via toggle */
-  }
-
-  .mobile-log-toggle {
-    display: flex;
-    position: fixed;
-    bottom: 16px;
+  .game-overlays-container {
     right: 16px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--accent-gradient);
-    color: #020617;
-    font-size: 1.2rem;
-    z-index: 40;
-    box-shadow: 0 4px 16px rgba(0, 212, 170, 0.4);
-    border: none;
-    align-items: center;
-    justify-content: center;
+    top: 10px;
   }
 
-  .game-sidebar.mobile-visible {
-    display: flex;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
+  .game-sidebar-stack {
+    display: none;
     width: 85vw;
-    max-width: 340px;
-    z-index: 45;
-    animation: slideInRight 0.3s ease;
-  }
-}
-
-@media (max-width: 480px) {
-  .game-layout {
-    grid-template-rows: auto 1fr auto;
+    max-width: 350px;
   }
 
-  .game-dashboard {
-    padding: 6px 8px;
-    max-height: 50vh;
+  .game-sidebar-stack.mobile-visible {
+    display: flex;
+    z-index: 110;
+    animation: slideInRight 0.3s ease forwards;
   }
-}
-
-@keyframes slideInRight {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
 }

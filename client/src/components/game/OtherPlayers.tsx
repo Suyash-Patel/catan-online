@@ -28,28 +28,34 @@ const OtherPlayers: React.FC = () => {
             className={`opponent-card ${isActive ? 'active' : ''}`}
             title={`${p.name}'s info`}
           >
-            <div 
-              className="opponent-color-indicator" 
-              style={{ backgroundColor: `var(--color-player-${p.color})` }}
-            />
-            <span className="opponent-name">{p.name}</span>
-            
-            {/* Victory Points */}
-            <span className="opponent-stat opponent-stat-vp">
-              🏆 {p.victoryPoints} VP
-            </span>
-
-            {/* Total Cards */}
-            <span className="opponent-stat" title="Total Resource & Commodity Cards">
-              🎴 {totalCards}
-            </span>
-
-            {/* Progress Cards */}
-            {gameState.citiesAndKnights && (
-              <span className="opponent-stat" title="Progress Cards">
-                🧪 {progressCount}
+            <div className="opponent-header">
+              <div className="opponent-avatar-wrap">
+                <div 
+                  className="opponent-color-indicator" 
+                  style={{ backgroundColor: `var(--color-player-${p.color})` }}
+                />
+              </div>
+              <span className="opponent-name">{p.name}</span>
+              <span className="opponent-vp-badge">
+                🏆 {p.victoryPoints} VP
               </span>
-            )}
+            </div>
+
+            <div className="opponent-stats-row">
+              <div className="opponent-stat" title="Resource & Commodity Cards">
+                🎴 <span>{totalCards}</span>
+              </div>
+              
+              {gameState.citiesAndKnights && (
+                <div className="opponent-stat" title="Progress Cards">
+                  🧪 <span>{progressCount}</span>
+                </div>
+              )}
+
+              <div className="opponent-stat" title="Road Length">
+                🛣️ <span>{p.longestRoadLength}</span>
+              </div>
+            </div>
           </div>
         );
       })}

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import BoardRenderer from '../board/BoardRenderer';
 import OtherPlayers from './OtherPlayers';
-import TurnTimer from './TurnTimer';
 import DiceDisplay from './DiceDisplay';
 import BarbarianTrack from './BarbarianTrack';
 import PlayerDashboard from './PlayerDashboard';
@@ -26,38 +25,57 @@ const GameView: React.FC = () => {
   // Check if player needs to discard
   const needsDiscard = gameState.pendingDiscards && gameState.pendingDiscards[playerId] > 0;
 
+  const player = gameState.players.find(p => p.id === playerId);
+
   return (
     <div className="game-layout">
-      {/* Top bar */}
-      <div className="game-topbar">
-        <div className="game-topbar-left">
-          <OtherPlayers />
-        </div>
-        <div className="game-topbar-center">
-          <TurnTimer />
-        </div>
-        <div className="game-topbar-right">
-          {gameState.citiesAndKnights && <BarbarianTrack />}
-          <DiceDisplay />
-        </div>
-      </div>
-
-      {/* Board area */}
+      {/* 1. Floating Board Area */}
       <div className="game-board-area">
         <BoardRenderer state={gameState} playerId={playerId} />
       </div>
 
-      {/* Bottom Dashboard */}
-      <div className="game-dashboard">
+      {/* 2. Top-Right Overlays (Dice, Barbarians, Settings) */}
+      <div className="game-overlays-container">
+        {gameState.citiesAndKnights && <BarbarianTrack />}
+        <DiceDisplay />
+      </div>
+
+      {/* 3. Right Sidebar Stack (Chat/Feed + Opponent Cards + Local Info) */}
+      <div className={`game-sidebar-stack ${showLog ? 'mobile-visible' : ''}`}>
+        {/* Chat / Feed panel at top */}
+        <div className="sidebar-section chat-section">
+          <ActionLog />
+        </div>
+
+        {/* Opponents profile stack in middle */}
+        <div className="sidebar-section opponents-section">
+          <div className="sidebar-section-header">OPPONENTS</div>
+          <OtherPlayers />
+        </div>
+
+        {/* Local Player Info Box at bottom */}
+        {player && (
+          <div className="sidebar-section local-player-card">
+            <div className="local-player-header">
+              <span className="local-color-indicator" style={{ backgroundColor: `var(--color-player-${player.color})` }} />
+              <span className="local-player-name">{player.name} (You)</span>
+            </div>
+            <div className="local-player-vp-badge">🏆 {player.victoryPoints} VP</div>
+            <div className="local-player-supplies">
+              <span>🛣️ Roads: {player.roadsRemaining}</span>
+              <span>🏠 Settle: {player.settlementsRemaining}</span>
+              <span>🏰 Cities: {player.citiesRemaining}</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 4. Bottom Floating Dashboard (Active Cards, Build options, Timer, Pass) */}
+      <div className="game-floating-dashboard">
         <PlayerDashboard />
       </div>
 
-      {/* Sidebar */}
-      <div className={`game-sidebar ${showLog ? 'mobile-visible' : ''}`}>
-        <ActionLog />
-      </div>
-
-      {/* Mobile log toggle */}
+      {/* Mobile Chat / Log Toggle Button */}
       <button className="mobile-log-toggle btn btn-ghost" onClick={() => setShowLog(!showLog)}>
         {showLog ? '✕' : '💬'}
       </button>

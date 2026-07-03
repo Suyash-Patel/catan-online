@@ -1,91 +1,116 @@
 .opponents-list {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
 }
 
 .opponent-card {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(31, 41, 55, 0.4);
-  border: 1px solid var(--glass-border);
-  padding: 6px 14px;
+  flex-direction: column;
+  background: rgba(15, 23, 42, 0.8);
+  border: 2px solid var(--glass-border);
   border-radius: var(--radius-md);
+  padding: 8px 12px;
   font-size: 0.85rem;
   transition: var(--transition-smooth);
 }
 
 .opponent-card.active {
   border-color: var(--accent-primary);
-  background: rgba(0, 212, 170, 0.05);
-  box-shadow: var(--shadow-glow);
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 0 15px rgba(0, 212, 170, 0.15);
+}
+
+.opponent-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.opponent-avatar-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .opponent-color-indicator {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .opponent-name {
   font-family: 'Outfit', sans-serif;
-  font-weight: 600;
-  max-width: 90px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.opponent-stat {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--text-secondary);
-  background: rgba(0, 0, 0, 0.2);
+.opponent-vp-badge {
+  background: var(--accent-gradient);
+  color: #020617;
   padding: 2px 6px;
   border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.opponent-stats-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.opponent-stat {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
-.opponent-stat-vp {
-  color: var(--accent-secondary);
-  font-weight: 700;
+.opponent-stat span {
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-primary);
 }
 
-/* ===== MOBILE OPPONENTS ===== */
+/* Mobile responsive styles */
 @media (max-width: 768px) {
   .opponents-list {
-    gap: 6px;
+    flex-direction: row;
     overflow-x: auto;
-    flex-wrap: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .opponents-list::-webkit-scrollbar {
-    display: none;
+    gap: 8px;
+    padding-bottom: 4px;
   }
 
   .opponent-card {
-    padding: 4px 8px;
-    font-size: 0.75rem;
+    min-width: 130px;
     flex-shrink: 0;
-    gap: 6px;
+    padding: 6px 10px;
   }
 
-  .opponent-name {
-    max-width: 60px;
-    font-size: 0.75rem;
-  }
-
-  .opponent-color-indicator {
-    width: 10px;
-    height: 10px;
+  .opponent-stats-row {
+    gap: 4px;
   }
 
   .opponent-stat {
-    padding: 1px 4px;
+    padding: 2px 4px;
     font-size: 0.7rem;
   }
 }
